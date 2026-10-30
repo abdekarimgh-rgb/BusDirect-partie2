@@ -1,12 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/output.css">
     <title>Document</title>
+    <link rel="stylesheet" href="./css/output.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 </head>
-<body>
-    
+
+<body class=" bg-blue-50">
+    <header class="bg-blue-800 flex flex-wrap place-content-between content-center">
+        <div class="flex">
+            <img src="img/logo-orange.png" alt="logo" class="w-14 bg-blue-500 rounded-2xl m-2">
+            <div class="text-white">
+                <h1 class="text-3xl text font-bold">BusDirect</h1>
+                <h4 class="flex text-center gap-2"> <span class="material-symbols-outlined">
+                        route
+                    </span> Ligne: <b>safi → marrakech</b></h4>
+            </div>
+        </div>
+
+        <nav class="text-blue-300 flex flex-wrap gap-3  px-2">
+            <div class=" text-center  bg-[#6911D1] w-30 flex flex-col place-content-center rounded-xl border-0 my-2">
+                <h4 class="font-semibold">TOTAL PASSAGERS</h4>
+                <span class="font-bold" id="TOTALPASSAGERS">0</span>
+            </div>
+            <div class=" text-center bg-[#6911D1] w-30 flex flex-col place-content-center rounded-xl border-0 my-2">
+                <h4 class="font-semibold">RECET RESEAU</h4>
+                <span class="font-bold" id="resetTotal">0</span>
+            </div>
+            <div class="flex items-center">
+                <span class="material-symbols-outlined font-bold">
+                    account_circle
+                </span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <nav>
+            <div class=" bg-white m-3 p-4 border-0 rounded-2xl shadow-xl flex flex-wrap gap-2  md:flex-nowrap">
+                <div class="flex gap-2 w-full">
+                    <label for="cabine_serch"></label>
+                    <input type="text" name="cabine_serch" id="cabine_serch"
+                        class=" border-1 py-1.5 px-2 rounded-xl border-blue-200 w-full outline-0 outline-blue-400 focus:outline-blue-600 outline-1"
+                        placeholder=" par ville(safi , Marrakech, casablanca...)">
+                    <input type="submit" id="btn" value="rechercher"
+                        class=" bg-blue-600 rounded-xl py-1.5 px-4 hover:bg-blue-700 cursor-pointer">
+                </div>
+                <select name="filter" id="fillter"
+                    class=" border-1 py-1.5 px-2 rounded-xl border-blue-200 outline-0 outline-blue-400 focus:outline-blue-600 outline-1 w-full md:w-40 cursor-pointer">
+                    <option value="Tous les status">Tous les status</option>
+                    <option value="Disponible">Disponible</option>
+                    <option value="Complet">Complet</option>
+                </select>
+            </div>
+        </nav>
+
+        <section id="tripsContainer" class=" grid grid-cols-3 gap-4 p-3">
+
+           <!-- remplis par dom -->
+
+        </section>
+
+        <nav class=" flex justify-center m-6">
+            <ul class="paginaction  flex gap-6">
+                <li class="pages py-2 px-3 bg-blue-100 rounded-xl border-2 shadow-xl border-blue-200 cursor-pointer focus:not-odd:border-black">1</li>
+                <li class="pages py-2 px-3 bg-blue-100 rounded-xl border-2 shadow-xl border-blue-200 cursor-pointer focus:not-odd:border-black">2</li>
+                <li class="pages py-2 px-3 bg-blue-100 rounded-xl border-2 shadow-xl border-blue-200 cursor-pointer focus:not-odd:border-black">3</li>
+                <li class="pages py-2 px-3 bg-blue-100 rounded-xl border-2 shadow-xl border-blue-200 cursor-pointer focus:not-odd:border-black">4</li>
+            </ul>
+        </nav>
+
+    </main>
+    <footer class="flex place-content-center content-end h-15 bg-blue-800 pt-5 rounded-t-2xl">
+        <article class="flex content-end text-blue-50 text-xs">
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing2026.</p>
+        </article>
+    </footer>
+    <script type="module" src="./js/main-trajets.js"></script>
 </body>
 </html>
