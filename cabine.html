@@ -1,12 +1,329 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/output.css">
-    <title>Document</title>
+    <link rel="stylesheet" href="/css/stylecabine.css">
+    <link rel="stylesheet" href="output.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.css"
+        integrity="sha512-x9WwyMYBnlXMNQ6kQ/Lyzu1NqIhLQKL5Oq6xByfXuRj7s9CskyCbLv/1IjqzJmXwFXWr0ov6jBV7Qbc0hh9nHg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+    <title>BusDirect</title>
 </head>
-<body>
-    
+
+<body class="bg-blue-100">
+    <header class="bg-blue-800 flex flex-wrap place-content-between content-center">
+        <div class="flex">
+            <img src="img/logo-orange.png" alt="logo" class="w-14 bg-blue-500 rounded-2xl m-2">
+            <div class="text-white">
+                <h1 class="text-3xl text font-bold">BusDirect</h1>
+                <h4 class="flex text-center gap-2"> <span class="material-symbols-outlined">
+                        route
+                    </span> Ligne: <b>safi → marrakech</b></h4>
+            </div>
+        </div>
+
+        <nav class="text-blue-300 flex flex-wrap gap-3  px-2">
+            <div class="  text-center bg-[#6911D1] w-25 flex flex-col place-content-center rounded-xl border-0 my-2 ">
+                <h4 class="font-semibold">Libre (80 DH)</h4>
+                <span class="font-bold" id="placeLibre">20</span>
+            </div>
+            <div class=" text-center  bg-[#6911D1] w-25 flex flex-col place-content-center rounded-xl border-0 my-2">
+                <h4 class="font-semibold">Occupé</h4>
+                <span class="font-bold" id="placeOccupe">0</span>
+            </div>
+            <div class=" text-center bg-[#6911D1] w-25 flex flex-col place-content-center rounded-xl border-0 my-2">
+                <h4 class="font-semibold">Recet Total</h4>
+                <span class="font-bold" id="resetTotal">0</span>
+            </div>
+            <div class="flex items-center">
+                <span class="material-symbols-outlined font-bold">
+                    account_circle
+                </span>
+            </div>
+        </nav>
+    </header>
+
+
+    <main>
+        <section
+            class=" border flex flex-wrap items-center justify-between px-4 bg-blue-50 my-4 mx-2 rounded-xl inset-shadow-indigo-400">
+            <div class="flex flex-wrap gap-2 items-center px-2 bg-blue-50 my-2 rounded-xl">
+                <div class="flex gap-1">
+                    <span class="material-symbols-outlined " style="color: #90CAF9;">dialogs</span>
+                    <h5>Libre</h5>
+                </div>
+                <div class="flex gap-1">
+                    <span class="material-symbols-outlined " style="color: #FFA726;">dialogs</span>
+                    <h5>Occupé</h5>
+                </div>
+            </div>
+            <div class=" flex items-center gap-2">
+                <label for="rechercher"></label>
+                <input type="text" id="rechercher" placeholder="Rechercher"
+                    class=" h-8 w-full px-2 border rounded-xl bg-blue-100 focus:shadow-xl">
+                <input type="button" name="sersh" id="sersh" value="Rechercher"
+                    class="text-center cursor-pointer bg-blue-600 w-full h-8 my-2 border-none rounded-xl hover:bg-blue-700 hover:transform-[scale(1.02)] hover:shadow-xl">
+            </div>
+        </section>
+
+        <section class="cabine-forms px-4 py-6 mx-3 border rounded-2xl gap-2">
+            <nav class="flex flex-col bg-red-50 px-4 py-3 border rounded-2xl text-blue-950 gap-3">
+                <div class="flex place-content-between w-full border rounded-xl">
+                    <div class="font-bold flex gap-1">
+                        <span class="material-symbols-outlined text-blue-500">chair</span>
+                        <h5 class="">Plan Cabine 20 place</h5>
+                    </div>
+                    <p class="bg-blue-200 rounded-xl px-3 text-blue-500">20 Sieges Total</p>
+                </div>
+
+                <article id="places">
+                    <div data-value="1" id="place-1" draggable="true"
+                        class="card cursor-pointer border-orange-300 bg-yellow-400 border-3 rounded-xl w-full max-w-25 px-2 py-2 text-center hover:transform-[scale(1.02)] hover:shadow-xl">
+                        <h6 class="font-semibold ">Siege 1</h6>
+                        <span class="material-symbols-outlined  bg-orange-300 rounded-4xl px-2 py-2">crown</span>
+                        <span id="telePassager" class="text-sm">0612345678</span>
+                        <p class="cardLibre">Libre</p>
+                    </div>
+
+                    <div data-value="2" id="place-2" draggable="true"
+                        class="card cursor-pointer border-orange-300 bg-yellow-400 border-3 rounded-xl w-full max-w-24 px-2 py-2 text-center hover:transform-[scale(1.02)] hover:shadow-xl">
+                        <h6 class="font-semibold">Siege 2</h6>
+                        <span class="material-symbols-outlined  bg-orange-300 rounded-4xl px-2 py-2">crown</span>
+                        <span id="telePassager" class="text-sm">0612345678</span>
+                        <p class="cardLibre">Libre</p>
+                    </div>
+
+                    <div data-value="3" id="place-3" draggable="true"
+                        class="card cursor-pointer border-orange-300 bg-yellow-400 border-3 rounded-xl w-full max-w-24 px-2 py-2 text-center hover:transform-[scale(1.02)] hover:shadow-xl">
+                        <h6 class="font-semibold">Siege 3</h6>
+                        <span class="material-symbols-outlined  bg-orange-300 rounded-4xl px-2 py-2">crown</span>
+                        <span id="telePassager" class="text-sm">0612345678</span>
+                        <p class="cardLibre ">Libre</p>
+                    </div>
+
+                    <div data-value="4" id="place-4" draggable="true"
+                        class="card cursor-pointer border-orange-300 bg-yellow-400 border-3 rounded-xl w-full max-w-24 px-2 py-2 text-center hover:transform-[scale(1.02)] hover:shadow-xl">
+                        <h6 class="font-semibold">Siege 4</h6>
+                        <span class="material-symbols-outlined  bg-orange-300 rounded-4xl px-2 py-2">crown</span>
+                        <span id="telePassager" class="text-sm">0612345678</span>
+                        <p class="cardLibre">Libre</p>
+                    </div>
+
+                    <div data-value="5" id="place-5" draggable="true"
+                        class="card cursor-pointer border-orange-300 bg-blue-200 border-3 rounded-xl w-full max-w-24 px-2 py-2 text-center hover:transform-[scale(1.02)] hover:shadow-xl">
+                        <h6 class="font-semibold">Siege 5</h6>
+                        <span class="material-symbols-outlined bg-orange-300 rounded-4xl px-2 py-2">living</span>
+                        <span id="telePassager" class="text-sm">0612345678</span>
+                        <p class="cardLibre">Libre</p>
+                    </div>
+
+                    <div data-value="6" id="place-6" draggable="true"
+                        class="card cursor-pointer border-orange-300 bg-blue-200 border-3 rounded-xl w-full max-w-24 px-2 py-2 text-center hover:transform-[scale(1.02)] hover:shadow-xl">
+                        <h6 class="font-semibold">Siege 6</h6>
+                        <span class="material-symbols-outlined bg-orange-300 rounded-4xl px-2 py-2">living</span>
+                        <span id="telePassager" class="text-sm">0612345678</span>
+                        <p class="cardLibre">Libre</p>
+                    </div>
+
+                    <div data-value="7" id="place-7" draggable="true"
+                        class="card cursor-pointer border-orange-300 bg-blue-200 border-3 rounded-xl w-full max-w-24 px-2 py-2 text-center hover:transform-[scale(1.02)] hover:shadow-xl">
+                        <h6 class="font-semibold">Siege 7</h6>
+                        <span class="material-symbols-outlined bg-orange-300 rounded-4xl px-2 py-2">living</span>
+                        <span id="telePassager" class="text-sm">0612345678</span>
+                        <p class="cardLibre">Libre</p>
+                    </div>
+
+                    <div data-value="8" id="place-8" draggable="true"
+                        class="card cursor-pointer border-orange-300 bg-blue-200 border-3 rounded-xl w-full max-w-24 px-2 py-2 text-center hover:transform-[scale(1.02)] hover:shadow-xl">
+                        <h6 class="font-semibold">Siege 8</h6>
+                        <span class="material-symbols-outlined bg-orange-300 rounded-4xl px-2 py-2">living</span>
+                        <span id="telePassager" class="text-sm">0612345678</span>
+                        <p class="cardLibre">Libre</p>
+                    </div>
+
+                    <div data-value="9" id="place-9" draggable="true"
+                        class="card cursor-pointer border-orange-300 bg-blue-200 border-3 rounded-xl w-full max-w-24 px-2 py-2 text-center hover:transform-[scale(1.02)] hover:shadow-xl">
+                        <h6 class="font-semibold">Siege 9</h6>
+                        <span class="material-symbols-outlined bg-orange-300 rounded-4xl px-2 py-2">living</span>
+                        <span id="telePassager" class="text-sm">0612345678</span>
+                        <p class="cardLibre">Libre</p>
+                    </div>
+
+                    <div data-value="10" id="place-10" draggable="true"
+                        class="card cursor-pointer border-orange-300 bg-blue-200 border-3 rounded-xl w-full max-w-24 px-2 py-2 text-center hover:transform-[scale(1.02)] hover:shadow-xl">
+                        <h6 class="font-semibold">Siege 10</h6>
+                        <span class="material-symbols-outlined bg-orange-300 rounded-4xl px-2 py-2">living</span>
+                        <span id="telePassager" class="text-sm">0612345678</span>
+                        <p class="cardLibre">Libre</p>
+                    </div>
+
+                    <div data-value="11" id="place-11" draggable="true"
+                        class="card cursor-pointer border-orange-300 bg-blue-200 border-3 rounded-xl w-full max-w-24 px-2 py-2 text-center hover:transform-[scale(1.02)] hover:shadow-xl">
+                        <h6 class="font-semibold">Siege 11</h6>
+                        <span class="material-symbols-outlined bg-orange-300 rounded-4xl px-2 py-2">living</span>
+                        <span id="telePassager" class="text-sm">0612345678</span>
+                        <p class="cardLibre">Libre</p>
+                    </div>
+
+                    <div data-value="12" id="place-12" draggable="true"
+                        class="card cursor-pointer border-orange-300 bg-blue-200 border-3 rounded-xl w-full max-w-24 px-2 py-2 text-center hover:transform-[scale(1.02)] hover:shadow-xl">
+                        <h6 class="font-semibold">Siege 12</h6>
+                        <span class="material-symbols-outlined bg-orange-300 rounded-4xl px-2 py-2">living</span>
+                        <span id="telePassager" class="text-sm">0612345678</span>
+                        <p class="cardLibre">Libre</p>
+                    </div>
+
+                    <div data-value="13" id="place-13" draggable="true"
+                        class="card cursor-pointer border-orange-300 bg-blue-200 border-3 rounded-xl w-full max-w-24 px-2 py-2 text-center hover:transform-[scale(1.02)] hover:shadow-xl">
+                        <h6 class="font-semibold">Siege 13</h6>
+                        <span class="material-symbols-outlined bg-orange-300 rounded-4xl px-2 py-2">living</span>
+                        <span id="telePassager" class="text-sm">0612345678</span>
+                        <p class="cardLibre">Libre</p>
+                    </div>
+
+                    <div data-value="14" id="place-14" draggable="true"
+                        class="card cursor-pointer border-orange-300 bg-blue-200 border-3 rounded-xl w-full max-w-24 px-2 py-2 text-center hover:transform-[scale(1.02)] hover:shadow-xl">
+                        <h6 class="font-semibold">Siege 14</h6>
+                        <span class="material-symbols-outlined bg-orange-300 rounded-4xl px-2 py-2">living</span>
+                        <span id="telePassager" class="text-sm">0612345678</span>
+                        <p class="cardLibre">Libre</p>
+                    </div>
+
+                    <div data-value="15" id="place-15" draggable="true"
+                        class="card cursor-pointer border-orange-300 bg-blue-200 border-3 rounded-xl w-full max-w-24 px-2 py-2 text-center hover:transform-[scale(1.02)] hover:shadow-xl">
+                        <h6 class="font-semibold">Siege 15</h6>
+                        <span class="material-symbols-outlined bg-orange-300 rounded-4xl px-2 py-2">living</span>
+                        <span id="telePassager" class="text-sm">0612345678</span>
+                        <p class="cardLibre">Libre</p>
+                    </div>
+
+                    <div data-value="16" id="place-16" draggable="true"
+                        class="card cursor-pointer border-orange-300 bg-blue-200 border-3 rounded-xl w-full max-w-24 px-2 py-2 text-center hover:transform-[scale(1.02)] hover:shadow-xl">
+                        <h6 class="font-semibold">Siege 16</h6>
+                        <span class="material-symbols-outlined bg-orange-300 rounded-4xl px-2 py-2">living</span>
+                        <span id="telePassager" class="text-sm">0612345678</span>
+                        <p class="cardLibre">Libre</p>
+                    </div>
+
+                    <div data-value="17" id="place-17" draggable="true"
+                        class="card cursor-pointer border-orange-300 bg-blue-200 border-3 rounded-xl w-full max-w-24 px-2 py-2 text-center hover:transform-[scale(1.02)] hover:shadow-xl">
+                        <h6 class="font-semibold">Siege 17</h6>
+                        <span class="material-symbols-outlined bg-orange-300 rounded-4xl px-2 py-2">living</span>
+                        <span id="telePassager" class="text-sm">0612345678</span>
+                        <p class="cardLibre">Libre</p>
+                    </div>
+
+                    <div data-value="18" id="place-18" draggable="true"
+                        class="card cursor-pointer border-orange-300 bg-blue-200 border-3 rounded-xl w-full max-w-24 px-2 py-2 text-center hover:transform-[scale(1.02)] hover:shadow-xl">
+                        <h6 class="font-semibold">Siege 18</h6>
+                        <span class="material-symbols-outlined bg-orange-300 rounded-4xl px-2 py-2">living</span>
+                        <span id="telePassager" class="text-sm">0612345678</span>
+                        <p class="cardLibre">Libre</p>
+                    </div>
+
+                    <div data-value="19" id="place-19" draggable="true"
+                        class="card cursor-pointer border-orange-300 bg-blue-200 border-3 rounded-xl w-full max-w-24 px-2 py-2 text-center hover:transform-[scale(1.02)] hover:shadow-xl">
+                        <h6 class="font-semibold">Siege 19</h6>
+                        <span class="material-symbols-outlined bg-orange-300 rounded-4xl px-2 py-2">living</span>
+                        <span id="telePassager" class="text-sm">0612345678</span>
+                        <p class="cardLibre">Libre</p>
+                    </div>
+
+                    <div data-value="20" id="place-20" draggable="true"
+                        class="card cursor-pointer border-orange-300 bg-blue-200 border-3 rounded-xl w-full max-w-24 px-2 py-2 text-center hover:transform-[scale(1.02)] hover:shadow-xl">
+                        <h6 class="font-semibold">Siege 20</h6>
+                        <span class="material-symbols-outlined bg-orange-300 rounded-4xl px-2 py-2">living</span>
+                        <span id="telePassager" class="text-sm">0612345678</span>
+                        <p class="cardLibre">Libre</p>
+                    </div>
+                </article>
+            </nav>
+            <section id="formulaire" class=" bg-blue-50 px-4 py-4 border rounded-2xl content-center text-blue-950">
+                <form id="form1" class="">
+                    <div class="flex">
+                        <span class="material-symbols-outlined">airline_seat_recline_extra</span>
+                        <h3 class="text-xl font-semibold ">Reservation d'un place</h3>
+                    </div>
+                    <div class="flex flex-col  px-4 py-4">
+                        <label for="nomPassager" class="">Passager</label>
+                        <input type="text" name="nomPassager" id="nomPassager"
+                            class="h-8 w-full px-2 border rounded-xl border-blue-950 bg-blue-100 focus:shadow-xl"
+                            placeholder="Ex: THomas Martin">
+
+                        <label for="telephone" class="">numero de telephone</label>
+                        <input type="tel" name="telephone" id="telephone"
+                            class="h-8 w-full px-2 border rounded-xl border-blue-950 bg-blue-100 focus:shadow-xl"
+                            placeholder="EX:0666666666">
+
+                        <label for="selectSiege">Siege selectionne</label>
+                        <select name="siege" id="selectSiege"
+                            class="cursor-pointer h-8 w-full border rounded-xl bg-blue-100 focus:shadow-xl"
+                            placeholder="--siege libre--"></select>
+                        <input type="submit" name="" id="confirmer" value="confiemer"
+                            class=" cursor-pointer bg-blue-600 w-full h-8 my-2 border-none rounded-xl hover:bg-blue-700 hover:transform-[scale(1.02)] hover:shadow-xl">
+                    </div>
+                </form>
+
+                <form id="form2">
+                    <div class="flex">
+                        <span class="material-symbols-outlined">contract_edit</span>
+                        <h3 class="text-xl font-semibold">Modifier une place</h3>
+                    </div>
+                    <div class="flex flex-col px-4 py-4">
+                        <label for="PassagerExistant" class="">Passager existant</label>
+                        <select name="" id="PassagerExistant"
+                            class=" cursor-pointer h-8 w-full px-2 border rounded-xl bg-blue-100 focus:shadow-xl"
+                            placeholder=""></select>
+                        <label for="NomPassagerM">Nom de passager</label>
+                        <input type="text" name="NomPassagerM" id="NomPassagerM"
+                            class=" h-8 w-full px-2 border rounded-xl bg-blue-100 focus:shadow-xl"
+                            placeholder="Ex: THomas Martin">
+                        <label for="NouveauSiege" class="">Nouveau siege</label>
+                        <select name="Valider" id="NouveauSiege"
+                            class=" cursor-pointer h-8 w-full px-2 border rounded-xl bg-blue-100 focus:shadow-xl"></select>
+                        <input type="submit" value="Valider" id="Valider"
+                            class="cursor-pointer bg-blue-600 w-full h-8 my-2 border-none rounded-xl hover:bg-blue-700 hover:transform-[scale(1.02)] hover:shadow-xl">
+                    </div>
+                </form>
+
+                <form id="form3">
+                    <div class="flex ">
+                        <span class="material-symbols-outlined">delete</span>
+                        <h3 class="text-xl font-semibold">Supprimer une reservation</h3>
+                    </div>
+                    <div class="flex flex-col px-4 py-4">
+                        <label for="PassagerReserve" class="">Passager reserve</label>
+                        <select name="PassagerReserve" id="PassagerReserve"
+                            class="cursor-pointer h-8 w-full px-2 border rounded-xl bg-blue-100 focus:shadow-xl"></select>
+                        <input type="submit" value="Supprimer"
+                            class="cursor-pointer bg-blue-600 w-full h-8 my-2 border-none rounded-xl hover:bg-blue-700 hover:transform-[scale(1.02)] hover:shadow-xl">
+                    </div>
+                </form>
+
+                <form id="form4">
+                    <div class=" flex justify-between px-4 py-4 text-blue-950">
+                        <div class="flex">
+                            <span class="material-symbols-outlined">hourglass_bottom</span>
+                            <h2 class="text-xl font-semibold">Liste d'attente</h2>
+                        </div>
+                        <h2 class="text-xl font-semibold">0</h2>
+                    </div>
+                    <div class="flex justify-center px-4 py-4"><i>Aucun passager en attente.</i></div>
+                </form>
+
+            </section>
+        </section>
+    </main>
+
+    <footer class="flex place-content-center content-end h-15 bg-blue-800 pt-5 rounded-t-2xl">
+        <article class="flex content-end text-blue-50 text-xs">
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing2026.</p>
+        </article>
+    </footer>
+    <script type="module" src="script.js"></script>
 </body>
+
 </html>

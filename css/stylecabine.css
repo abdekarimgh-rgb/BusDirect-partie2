@@ -1,0 +1,52 @@
+/* cabine */
+
+#places{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 10px;
+    justify-content: center;
+}
+
+.card{
+    justify-self: center;
+}
+
+#choix{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.red{
+    background-color: #ff0000;
+}
+
+.cabine-forms{
+    display: flex;
+    flex-direction: column-reverse;
+}
+@media (min-width : 768px){
+    .cabine-forms{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+    
+}
+
+/* element dom */
+
+.messageStyle{
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 260px;
+    height: 80px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(to left, rgba(255, 166, 0, 0.514), rgba(0, 0, 255, 0.547));
+    box-shadow: 5px 5px 15px 20px rgba(0, 0, 0, 0.50%);
+    z-index: 2;
+}
