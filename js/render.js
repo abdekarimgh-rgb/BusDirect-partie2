@@ -1,6 +1,6 @@
 
 import { estComplet, placesLibres } from "./reservations.js";
-import { sauvegarder } from "./store.js";
+import { initialize, sauvegarder, trips } from "./store.js";
 
 export function affichageTrajet(trips) {
     const contaiaier = document.getElementById('tripsContainer');
@@ -9,7 +9,7 @@ export function affichageTrajet(trips) {
 
 
         const card = document.createElement('div');
-        card.className = 'trajet bg-blue-50 rounded-2xl p-2 m-1 shadow-xl'
+        card.className = 'trajet bg-blue-50 rounded-2xl p-2 m-1 shadow-xl hover:shadow-blue-400'
         card.innerHTML = `
                 <div class=" flex justify-between">
                     <p class=" border-0 rounded-2xl px-2 bg-blue-100 text-blue-500">Trajet ${trip.id}</p>
@@ -18,7 +18,7 @@ export function affichageTrajet(trips) {
                 <h2 class="direction text-xl font-bold text-blue-950">${trip.departure} → ${trip.destination}</h2>
                 <p class="text-blue-400 ">${trip.departureTime} - ${trip.arrivalTime}</p>
 
-                <div class="infoCard bg-blue-100 rounded-2xl p-4">
+                <div class="infoCard bg-blue-100 rounded-2xl p-4 ">
                     <div class=" flex justify-between">
                         <p class="text-blue-950">Prix base:</p>
                         <p class=" text-blue-950 m">${trip.price}dh</p>
@@ -36,7 +36,7 @@ export function affichageTrajet(trips) {
                         <p class="Recette text-blue-950 ">${trip.price * trip.reservations.length}</p>
                     </div>
                 </div>
-                <a href="./cabine.html?id=${Number(trip.id)}" ><button class=" bg-blue-600 rounded-xl py-1.5 px-4 hover:bg-blue-700 font-bold flex justify-self-center justify-center w-full m-2 cursor-pointer">Gérer la cabine</button></a>
+                <a href="./cabine.html?id=${Number(trip.id)}" ><button class=" bg-blue-600 rounded-xl py-1.5 px-4 hover:bg-blue-700 font-bold flex justify-self-center justify-center w-full m-2 cursor-pointer hover:scale-105">Gérer la cabine</button></a>
         `
         contaiaier.appendChild(card)
 
@@ -52,6 +52,7 @@ export function affichageTrajet(trips) {
             status.textContent = "Disponible"
             status.style.backgroundColor = '#5CCB5F'
         }
+
     });
 }
 
@@ -72,26 +73,30 @@ export function statistiqueTrajet() {
     resetTotal.textContent = totolRocetTrajets + " DH"
     //number de passagers
     const TOTALPASSAGERS = document.getElementById('TOTALPASSAGERS')
-    TOTALPASSAGERS.textContent = 400 - SeateCabinelibre
+    TOTALPASSAGERS.textContent = 400 - SeateCabinelibre;
 }
+
+
+
+//partie recherchwe et filter
 
 
 export function rechercherEndFiltrer() {
 
     const cabine_serch = document.getElementById('cabine_serch');
     const filtrer = document.getElementById('filtrer');
-    const tripsContainer = document.getElementById('tripsContainer')
 
     function application() {
 
-        let sersh = cabine_serch.value.toLowerCase();
+        let sersh = cabine_serch.value.toLowerCase().trim();
         const trajets = document.querySelectorAll('.direction');
 
         trajets.forEach((trajet) => {
-            const statusTrajet = trajet.parentElement.querySelector('.statusTrajet').textContent
+
+            const statusTrajet = trajet.parentElement.querySelector('.statusTrajet').textContent.trim()
 
             if (trajet.textContent.toLowerCase().includes(sersh) && (filtrer.value === 'Tous les status' || statusTrajet === filtrer.value)) {
-                trajet.parentElement.style.display = 'block'
+                trajet.parentElement.style.display = ''
             }
             else {
                 trajet.parentElement.style.display = 'none';
@@ -103,18 +108,21 @@ export function rechercherEndFiltrer() {
     filtrer.addEventListener('change', application)
 }
 
-//partie pagination
+
 
 
 export function pagenationAndBtns() {
-    const cardstrajet = document.querySelectorAll('.trajet')
 
+    const  cardstrajet = document.querySelectorAll('.trajet')
     const tab = Array.from(cardstrajet)
+    
+    const limite = 6;
 
     function pagination(numberPage) {
 
-        const limite = 6;
+
         const tripsContainer = document.querySelector('#tripsContainer')
+        tripsContainer.innerHTML = ""
         const start = (numberPage - 1) * limite;
         const end = numberPage * limite;
         console.log(tab)
@@ -122,21 +130,25 @@ export function pagenationAndBtns() {
         const trips_pagination = tab.slice(start, end).map(Element => {
             return Element.outerHTML
         })
-
+        console.log(trips_pagination)
         tripsContainer.innerHTML = trips_pagination.join("")
     }
 
     function btns() {
 
         const bottons = [...Array(Math.ceil(tab.length / 6)).keys()].map(Element => {
-            return `<li class="pages py-2 px-3 bg-blue-100 rounded-xl border-2 shadow-xl border-blue-200 cursor-pointer focus:not-odd:border-black" data-page="${Element + 1}">${Element + 1}</li>`
+            return `<li class="pages py-2 px-3 bg-blue-100 rounded-xl border-2 shadow-xl border-blue-200 cursor-pointer :border-black" data-page="${Element + 1}">${Element + 1}</li>`
         })
         const ul = document.querySelector('.paginaction');
+        ul.innerHTML = "";
 
         ul.insertAdjacentHTML("beforeend", bottons.join(""))
         ul.addEventListener('click', e => {
-            const NUMBERPAGE = e.target.dataset.page
-            pagination(NUMBERPAGE)
+            if (e.target.dataset.page) {
+                const NUMBERPAGE = Number(e.target.dataset.page)
+                pagination(NUMBERPAGE)
+            }
+
         });
     }
     pagination(1);
@@ -166,6 +178,7 @@ export function workCabine(trip, trips) {
     //Reservation d'un place
 
     const nomPassager = document.getElementById('nomPassager');
+    const telephone = document.getElementById('telephone');
     const selectSiege = document.getElementById('selectSiege');
     const confirmer = document.getElementById('confirmer');
 
@@ -189,6 +202,12 @@ export function workCabine(trip, trips) {
     //////////main
 
     function remplirSeiges() {
+
+        const direction = document.getElementById('direction');
+        direction.innerHTML += `<b class="text-5 flex items-center gap-2 bg-blue-300 rounded-xl px-2"> <span class="material-symbols-outlined">route</span>ligne : ${trip.departure} → ${trip.destination}</b>
+                                <b class="flex items-center gap-2 text-blue-500 text-sm bg-blue-300 rounded-xl px-2"><span class="material-symbols-outlined">schedule</span>  ${trip.departureTime} - ${trip.arrivalTime} </b>
+                             `
+
         selectSiege.innerHTML = '<option value="">-- Automatique (1er libre) --</option>';
         NouveauSiege.innerHTML = '<option value="" >-- choisir un nouveau siege</option>';
         for (let i = 0; i < Totalplace; i++) {
@@ -201,6 +220,7 @@ export function workCabine(trip, trips) {
             option2.value = i + 1;
             option2.textContent = `Siege ${i + 1}`;
             NouveauSiege.appendChild(option2);
+
         }
     }
 
@@ -218,9 +238,6 @@ export function workCabine(trip, trips) {
 
 
 
-    //var dataName = JSON.parse(localStorage.getItem("busNames")) || [];
-    //var dataSeat = JSON.parse(localStorage.getItem("busSeats")) || [];
-
     const reservations = trip.reservations;
 
     function returnStyle() {
@@ -233,6 +250,7 @@ export function workCabine(trip, trips) {
 
                 const statusPlace = targetPlace.querySelector('p');
                 statusPlace.textContent = reservation.name;
+                const phone = document.querySelector('.phones').textContent = reservation.phone
             }
         })
     }
@@ -352,6 +370,7 @@ export function workCabine(trip, trips) {
             e.preventDefault();
 
             let nom = nomPassager.value.trim();
+            let tele = telephone.value.trim();
             let siegeShoisi = selectSiege.value;
 
             if (nom === "") {
@@ -395,7 +414,8 @@ export function workCabine(trip, trips) {
 
             reservations.push({
                 name: nom,
-                seat: siegeFinal
+                seat: siegeFinal,
+                phone: tele
             });
 
             sauvegarder(trips)
@@ -404,6 +424,7 @@ export function workCabine(trip, trips) {
 
             nomPassager.value = "";
             selectSiege.value = "";
+            telephone.value = "";
 
             alert("Réservation enregistrée !");
 
@@ -413,12 +434,6 @@ export function workCabine(trip, trips) {
                 targetPlace.classList.add('bg-orange-400');
                 const statusPlace = targetPlace.querySelector('p');
                 statusPlace.textContent = nom;
-
-
-                console.log("Siege final:", siegeFinal);
-                console.log("Target place:", targetPlace);
-                console.log("Classes:", targetPlace.className);
-
             }
 
             let totalOccupe = reservations.length;
@@ -492,7 +507,7 @@ export function workCabine(trip, trips) {
             if (nouveauNam !== "") {
                 nomfinal = nouveauNam;
                 if (reservations.some((reservation, index) => {
-                    return reservation.name === nomfinal  && index !== position;
+                    return reservation.name === nomfinal && index !== position;
                 })) {
                     message('le nom est deja existe');
                     return;
@@ -567,14 +582,14 @@ export function workCabine(trip, trips) {
                 return;
             }
 
-            let Siege = reservations[positionNam].name;
+            let Siege = reservations[positionNam].name;      //j'ai doit verifie
 
             alert(`supprimer la place de ${reservations[positionNam].name}`);
 
             reservations.splice(positionNam, 1);
 
-            sauvegarder(trips)
-            
+            sauvegarder(trips);
+
             let totalOccupe = reservations.length;
             placeOccupe.textContent = totalOccupe;
 

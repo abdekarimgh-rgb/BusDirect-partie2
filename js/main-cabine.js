@@ -12,8 +12,12 @@ async function afficheCabine() {
         console.log('id='+id)
 
         const trip = trips.find(trip => trip.id === id);
-        console.log(trip.reservations)
-    
+
+        if(!trip){
+            const body = document.body;
+            body.innerHTML = '<div class="flex justify-center self-center text-5xl font-serif font-semibold  text-blue-400"> « Trajet introuvable »</div>'
+            body.className = "h-screen flex justify-center text-blue-400"
+        }
 
         workCabine(trip, trips);
 
