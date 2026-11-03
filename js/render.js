@@ -1,5 +1,5 @@
 
-import { estComplet, placesLibres } from "./reservations.js";
+import { estComplet, placesLibres, prixSiege } from "./reservations.js";
 import { initialize, sauvegarder, trips } from "./store.js";
 
 export function affichageTrajet(trips) {
@@ -33,7 +33,9 @@ export function affichageTrajet(trips) {
                     </div>
                     <div class="flex justify-between">
                         <p class="text-blue-950">Recette:</p>
-                        <p class="Recette text-blue-950 ">${trip.price * trip.reservations.length}</p>
+                        <p class="Recette text-blue-950 ">${trip.reservations.reduce(function (total, reservation) {
+                        return total + prixSiege(trip.price, reservation.seat)
+                        },0)}</p>
                     </div>
                 </div>
                 <a href="./cabine.html?id=${Number(trip.id)}" ><button class=" bg-blue-600 rounded-xl py-1.5 px-4 hover:bg-blue-700 font-bold flex justify-self-center justify-center w-full m-2 cursor-pointer hover:scale-105">Gérer la cabine</button></a>
@@ -113,9 +115,9 @@ export function rechercherEndFiltrer() {
 
 export function pagenationAndBtns() {
 
-    const  cardstrajet = document.querySelectorAll('.trajet')
+    const cardstrajet = document.querySelectorAll('.trajet')
     const tab = Array.from(cardstrajet)
-    
+
     const limite = 6;
 
     function pagination(numberPage) {
@@ -285,7 +287,10 @@ export function workCabine(trip, trips) {
         placeLibre.textContent = (TotalLibre);
 
 
-        let toltalrecet = totalOccupe * trip.price;
+        let toltalrecet = reservations.reduce(function (total, reservation) {
+            return total + prixSiege(trip.price, reservation.seat)
+        }, 0)
+        // let toltalrecet = totalOccupe * trip.price;
         resetTotal.textContent = (toltalrecet + '.00DH');
     }
 
