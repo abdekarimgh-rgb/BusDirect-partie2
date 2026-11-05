@@ -1,6 +1,7 @@
 
-import { estComplet, placesLibres } from "./reservations.js";
+import { estComplet, placesLibres, prixSiege } from "./reservations.js";
 import { initialize, sauvegarder, trips } from "./store.js";
+import { validationForm } from "./validators.js";
 
 export function affichageTrajet(trips) {
     const contaiaier = document.getElementById('tripsContainer');
@@ -33,7 +34,9 @@ export function affichageTrajet(trips) {
                     </div>
                     <div class="flex justify-between">
                         <p class="text-blue-950">Recette:</p>
-                        <p class="Recette text-blue-950 ">${trip.price * trip.reservations.length}</p>
+                        <p class="Recette text-blue-950 ">${trip.reservations.reduce(function (total, reservation) {
+                        return total + prixSiege(trip.price, reservation.seat)
+                        },0)}</p>
                     </div>
                 </div>
                 <a href="./cabine.html?id=${Number(trip.id)}" ><button class=" bg-blue-600 rounded-xl py-1.5 px-4 hover:bg-blue-700 font-bold flex justify-self-center justify-center w-full m-2 cursor-pointer hover:scale-105">Gérer la cabine</button></a>
@@ -113,9 +116,9 @@ export function rechercherEndFiltrer() {
 
 export function pagenationAndBtns() {
 
-    const  cardstrajet = document.querySelectorAll('.trajet')
+    const cardstrajet = document.querySelectorAll('.trajet')
     const tab = Array.from(cardstrajet)
-    
+
     const limite = 6;
 
     function pagination(numberPage) {
@@ -210,12 +213,17 @@ export function workCabine(trip, trips) {
                                 <b class="flex items-center gap-2 text-blue-500 text-sm bg-blue-300 rounded-xl px-2"><span class="material-symbols-outlined">schedule</span>  ${trip.departureTime} - ${trip.arrivalTime} </b>
                              `
 
-        selectSiege.innerHTML = '<option value="">-- Automatique (1er libre) --</option>';
-        NouveauSiege.innerHTML = '<option value="" >-- choisir un nouveau siege</option>';
+        selectSiege.innerHTML = `<option value="">-- Automatique (1er libre) --</option>`;
+        NouveauSiege.innerHTML = `<option value="" >-- choisir un nouveau siege</option>`;
         for (let i = 0; i < Totalplace; i++) {
             const option1 = document.createElement('option');
             option1.value = i + 1;
-            option1.textContent = `siege ${i + 1}`;
+            if(i <= 3){
+                option1.textContent = `siege ${i + 1} — VIP ${parseInt(trip.price*1.1)} DH`
+            }else{
+                option1.textContent = `siege ${i + 1}`;
+            }
+            
             selectSiege.appendChild(option1);
 
             const option2 = document.createElement('option');
@@ -287,7 +295,10 @@ export function workCabine(trip, trips) {
         placeLibre.textContent = (TotalLibre);
 
 
-        let toltalrecet = totalOccupe * trip.price;
+        let toltalrecet = reservations.reduce(function (total, reservation) {
+            return total + prixSiege(trip.price, reservation.seat)
+        }, 0)
+        // let toltalrecet = totalOccupe * trip.price;
         resetTotal.textContent = (toltalrecet + '.00DH');
     }
 
@@ -374,6 +385,7 @@ export function workCabine(trip, trips) {
             let nom = nomPassager.value.trim();
             let tele = telephone.value.trim();
             let siegeShoisi = selectSiege.value;
+            
 
             if (nom === "") {
                 message('Entre un nom')
@@ -384,6 +396,13 @@ export function workCabine(trip, trips) {
                 message('Le nom est deja existe');
                 return;
             }
+
+            //telephone 
+            
+             validationForm(tele, trip)
+             if(!validationForm(tele, trip)){
+                return;
+             }
 
             let siegeFinal = null;
 
@@ -400,7 +419,7 @@ export function workCabine(trip, trips) {
             //place auto
 
             else {
-                for (let i = 1; i <= Totalplace; i++) {
+                for (let i = 4; i <= Totalplace; i++) {
                     if (!reservations.some(reservation => reservation.seat === i)) {
                         siegeFinal = i;
                         break;
@@ -427,8 +446,11 @@ export function workCabine(trip, trips) {
             nomPassager.value = "";
             selectSiege.value = "";
             telephone.value = "";
-
-            alert("Réservation enregistrée !");
+            
+            message("Réservation enregistrée !");
+            setTimeout(function(){
+                message.remove();
+            }, 3000)
 
             const targetPlace = document.getElementById(`place-${siegeFinal}`);
             if (targetPlace) {
