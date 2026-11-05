@@ -201,6 +201,8 @@ export function workCabine(trip, trips) {
 
     //////////main
 
+    remplisTele(trip)
+
     function remplirSeiges() {
 
         const direction = document.getElementById('direction');

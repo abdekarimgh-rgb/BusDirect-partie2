@@ -5,3 +5,4 @@ export function placesLibres(trip){
 export function estComplet(trip){
     return placesLibres(trip) === 0;
 }
+
