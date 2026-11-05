@@ -1,4 +1,4 @@
-import { affichageTrajet, statistiqueTrajet } from "./render.js";
+import { affichageTrajet, pagenationAndBtns,  rechercherEndFiltrer, statistiqueTrajet } from "./render.js";
 import { initialize } from "./store.js";
 
 let trips = [];
@@ -9,3 +9,9 @@ console.log(trips)
 affichageTrajet(trips);
 
 statistiqueTrajet();
+
+rechercherEndFiltrer();
+
+//pagination(1);
+pagenationAndBtns()
+//btns();

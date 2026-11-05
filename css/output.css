@@ -11,6 +11,7 @@
     --color-red-50: oklch(97.1% 0.013 17.38);
     --color-red-200: oklch(88.5% 0.062 18.334);
     --color-red-400: oklch(70.4% 0.191 22.216);
+<<<<<<< HEAD
     --color-red-800: oklch(44.4% 0.177 26.899);
     --color-orange-300: oklch(83.7% 0.128 66.29);
     --color-amber-400: oklch(82.8% 0.189 84.429);
@@ -18,6 +19,10 @@
     --color-yellow-50: oklch(98.7% 0.026 102.212);
     --color-yellow-200: oklch(94.5% 0.129 101.54);
     --color-yellow-300: oklch(90.5% 0.182 98.111);
+=======
+    --color-orange-300: oklch(83.7% 0.128 66.29);
+    --color-yellow-50: oklch(98.7% 0.026 102.212);
+>>>>>>> origin/feature/store
     --color-yellow-400: oklch(85.2% 0.199 91.936);
     --color-blue-50: oklch(97% 0.014 254.604);
     --color-blue-100: oklch(93.2% 0.032 255.585);
@@ -228,6 +233,12 @@
   .my-4 {
     margin-block: calc(var(--spacing) * 4);
   }
+<<<<<<< HEAD
+=======
+  .block {
+    display: block;
+  }
+>>>>>>> origin/feature/store
   .flex {
     display: flex;
   }
@@ -255,6 +266,12 @@
   .w-30 {
     width: calc(var(--spacing) * 30);
   }
+<<<<<<< HEAD
+=======
+  .w-200 {
+    width: calc(var(--spacing) * 200);
+  }
+>>>>>>> origin/feature/store
   .w-full {
     width: 100%;
   }
