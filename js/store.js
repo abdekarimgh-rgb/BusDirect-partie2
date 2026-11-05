@@ -1,4 +1,6 @@
 const keyStorage = "busTrips";
+export let trips = [];
+trips = await initialize();
 
 export async function initialize(){
     const donneesLocalStorage = localStorage.getItem(keyStorage);
