@@ -35,8 +35,8 @@ export function affichageTrajet(trips) {
                     <div class="flex justify-between">
                         <p class="text-blue-950">Recette:</p>
                         <p class="Recette text-blue-950 ">${trip.reservations.reduce(function (total, reservation) {
-                        return total + prixSiege(trip.price, reservation.seat)
-                        },0)}</p>
+            return total + prixSiege(trip.price, reservation.seat)
+        }, 0)}</p>
                     </div>
                 </div>
                 <a href="./cabine.html?id=${Number(trip.id)}" ><button class=" bg-blue-600 rounded-xl py-1.5 px-4 hover:bg-blue-700 font-bold flex justify-self-center justify-center w-full m-2 cursor-pointer hover:scale-105">Gérer la cabine</button></a>
@@ -188,6 +188,7 @@ export function workCabine(trip, trips) {
     //Modifier une place
 
     const PassagerExistant = document.getElementById('PassagerExistant');
+    const nouvellePhone = document.getElementById('telephonMdf');
     const NomPassagerM = document.getElementById('NomPassagerM');
     const NouveauSiege = document.getElementById('NouveauSiege');
     const Valider = document.getElementById('Valider');
@@ -204,7 +205,7 @@ export function workCabine(trip, trips) {
 
     //////////main
 
-    remplisTele(trip)
+
 
     function remplirSeiges() {
 
@@ -218,12 +219,12 @@ export function workCabine(trip, trips) {
         for (let i = 0; i < Totalplace; i++) {
             const option1 = document.createElement('option');
             option1.value = i + 1;
-            if(i <= 3){
-                option1.textContent = `siege ${i + 1} — VIP ${parseInt(trip.price*1.1)} DH`
-            }else{
+            if (i <= 3) {
+                option1.textContent = `siege ${i + 1} — VIP ${parseInt(trip.price * 1.1)} DH`
+            } else {
                 option1.textContent = `siege ${i + 1}`;
             }
-            
+
             selectSiege.appendChild(option1);
 
             const option2 = document.createElement('option');
@@ -246,7 +247,21 @@ export function workCabine(trip, trips) {
         }, 1500)
     }
 
+    function remplisNumero(trips) {
+        const phones = document.querySelectorAll('.phones');
 
+        phones.forEach((phone, index) => {
+            const reservation = trip.reservations.find(reservation => {
+                return reservation.seat === index + 1
+            })
+
+            if (reservation) {
+                phone.textContent = reservation.phone
+            }
+        })
+    }
+
+    
 
     const reservations = trip.reservations;
 
@@ -260,7 +275,8 @@ export function workCabine(trip, trips) {
 
                 const statusPlace = targetPlace.querySelector('p');
                 statusPlace.textContent = reservation.name;
-                const phone = document.querySelector('.phones').textContent = reservation.phone
+                const phone = document.querySelector('.phones')
+                phone.textContent = reservation.phone
             }
         })
     }
@@ -385,7 +401,7 @@ export function workCabine(trip, trips) {
             let nom = nomPassager.value.trim();
             let tele = telephone.value.trim();
             let siegeShoisi = selectSiege.value;
-            
+
 
             if (nom === "") {
                 message('Entre un nom')
@@ -398,11 +414,11 @@ export function workCabine(trip, trips) {
             }
 
             //telephone 
-            
-             validationForm(tele, trip)
-             if(!validationForm(tele, trip)){
+            const messageIn = document.querySelector('.messageIn');
+            validationForm(tele, trip, messageIn)
+            if (!validationForm(tele, trip, messageIn)) {
                 return;
-             }
+            }
 
             let siegeFinal = null;
 
@@ -419,7 +435,7 @@ export function workCabine(trip, trips) {
             //place auto
 
             else {
-                for (let i = 4; i <= Totalplace; i++) {
+                for (let i = 5; i <= Totalplace; i++) {
                     if (!reservations.some(reservation => reservation.seat === i)) {
                         siegeFinal = i;
                         break;
@@ -440,35 +456,39 @@ export function workCabine(trip, trips) {
             });
 
             sauvegarder(trips)
-
+            remplisNumero(trip)
             adapteStyle()
 
             nomPassager.value = "";
             selectSiege.value = "";
             telephone.value = "";
-            
-            message("Réservation enregistrée !");
-            setTimeout(function(){
-                message.remove();
-            }, 3000)
 
+            message("Réservation enregistrée !");
+        
             const targetPlace = document.getElementById(`place-${siegeFinal}`);
             if (targetPlace) {
                 targetPlace.classList.remove('bg-blue-200');
                 targetPlace.classList.add('bg-orange-400');
                 const statusPlace = targetPlace.querySelector('p');
                 statusPlace.textContent = nom;
+                const phone = targetPlace.querySelector('.phones')
+                phone.textContent = tele
             }
 
             let totalOccupe = reservations.length;
             placeOccupe.textContent = totalOccupe;
 
-            let TotalLibre = 20 - totalOccupe;
+            let TotalLibre = Totalplace - totalOccupe;
             placeLibre.textContent = (TotalLibre);
 
+            let toltalrecet = reservations.reduce(function(total, reservation){
+                return total + prixSiege(trip.price, reservation.seat);
+            }, 0);
 
-            let toltalrecet = totalOccupe * trip.price;
-            resetTotal.textContent = (toltalrecet + '.00DH');
+            resetTotal.textContent = toltalrecet+"DH";
+
+            // let toltalrecet = totalOccupe * trip.price;
+            // resetTotal.textContent = (toltalrecet + '.00DH');
 
             remplisagePassagerModif_Supp();
         });
@@ -507,11 +527,19 @@ export function workCabine(trip, trips) {
             e.preventDefault();
 
             let nomChoisi = PassagerExistant.value;
+            let nouveauPhone = nouvellePhone.value.trim()
             let nouveauNam = NomPassagerM.value.trim();
             let nouveauSiege = NouveauSiege.value;
 
             if (nouveauNam === "" && nouveauSiege === "") {
-                message('remplis ou moins deux chemps!');
+                message('remplis ou moins deux chemps! choisir un nom obliguatoire');
+                return;
+            }
+
+            const nomRegex = /^[a-zA-ZÀ-ÿ\s]+$/;
+
+            if(!nomRegex.test(nouveauNam)){
+                message('Nom invalid')
                 return;
             }
 
@@ -542,6 +570,21 @@ export function workCabine(trip, trips) {
                 nomfinal = nomChoisi;
             }
 
+            let phoneFinal;
+            if (nouveauPhone !== "") {
+                phoneFinal = nouveauPhone;
+                const messageIn2 = document.querySelector(".messageIn2")
+                
+                validationForm(nouveauPhone, trip, messageIn2)
+                if (!validationForm(nouveauPhone, trip, messageIn2)) {
+                    return;
+                }
+            }
+
+            else{
+                phoneFinal = reservations[position].phone;
+            }
+
             let siegeFinal;
             if (nouveauSiege !== "") {
                 siegeFinal = nouveauSiege;
@@ -560,6 +603,7 @@ export function workCabine(trip, trips) {
                 XPlace.classList.remove('bg-orange-400');
                 XPlace.classList.add('bg-blue-200');
                 XPlace.querySelector('p').textContent = 'Libre';
+                XPlace.querySelector('.phones').textContent = "";
             }
 
             const NPlace = document.getElementById(`place-${siegeFinal}`);
@@ -567,10 +611,14 @@ export function workCabine(trip, trips) {
                 NPlace.classList.remove('bg-blue-200');
                 NPlace.classList.add('bg-orange-400');
                 NPlace.querySelector('p').textContent = nomfinal;
+                NPlace.querySelector('.phones').textContent = phoneFinal
+                console.log(phoneFinal)
+
             }
 
-            reservations[position].name = nomfinal;
             reservations[position].seat = siegeFinal;
+            reservations[position].name = nomfinal;
+            reservations[position].phone = phoneFinal;
             sauvegarder(trips)
 
             alert('Modification termine');
@@ -581,6 +629,7 @@ export function workCabine(trip, trips) {
             PassagerExistant.value = "";
             NouveauSiege.value = "";
 
+            remplisNumero(trip)
             remplirSeiges();
             remplisagePassagerModif_Supp();
         });
@@ -606,13 +655,14 @@ export function workCabine(trip, trips) {
                 return;
             }
 
-            let Siege = reservations[positionNam].name;      //j'ai doit verifie
+            let Siege = reservations[positionNam].seat;      //j'ai doit verifie
 
             alert(`supprimer la place de ${reservations[positionNam].name}`);
 
             reservations.splice(positionNam, 1);
 
             sauvegarder(trips);
+            remplisNumero(trip);
 
             let totalOccupe = reservations.length;
             placeOccupe.textContent = totalOccupe;
@@ -626,15 +676,17 @@ export function workCabine(trip, trips) {
 
             const supp = document.getElementById(`place-${Siege}`);
             if (supp) {
+                console.log('mdf supp')
                 supp.classList.remove('bg-orange-400');
                 supp.classList.add('bg-blue-200');
                 supp.querySelector('p').textContent = 'Libre';
+                supp.querySelector('.phones').textContent = ""
             }
 
             remplisagePassagerModif_Supp();
         });
     }
-
+    remplisNumero(trip)
     staistique();
     returnStyle();
     remplirSeiges();

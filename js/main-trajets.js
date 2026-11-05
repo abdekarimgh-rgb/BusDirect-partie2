@@ -1,13 +1,14 @@
 import { affichageTrajet, rechercherEndFiltrer, pagenationAndBtns, statistiqueTrajet } from "./render.js";
-import { trips } from "./store.js";
+import { initialize } from "./store.js";
 
-// trips = await initialize();
+const trips = await initialize();
 console.log(trips)
-
+console.log(Array.isArray(trips));
 
 affichageTrajet(trips);
 
 statistiqueTrajet();
 rechercherEndFiltrer();
 //pagenationAndBtns()
+
 

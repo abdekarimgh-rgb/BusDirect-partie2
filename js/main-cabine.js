@@ -2,12 +2,17 @@ import { workCabine } from "./render.js";
 import { initialize } from "./store.js";
 async function afficheCabine() {
     try {
-        const trips = await initialize();
+        let trips = await initialize();
         console.log(trips)
+        
+        if(!Array.isArray(trips)){
+            trips = [];
+        }
 
         const params = new URLSearchParams(location.search);
 
         const id = Number(params.get("id"))
+        console.log(trips)
 
         console.log('id='+id)
 

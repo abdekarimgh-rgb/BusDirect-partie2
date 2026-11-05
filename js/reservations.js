@@ -16,3 +16,4 @@ export function prixSiege(prix, nemero){
     }
     return prix
 }
+
