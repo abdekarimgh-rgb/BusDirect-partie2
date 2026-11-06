@@ -313,7 +313,6 @@ export function workCabine(trip, trips) {
         let toltalrecet = reservations.reduce(function (total, reservation) {
             return total + prixSiege(trip.price, reservation.seat)
         }, 0)
-        // let toltalrecet = totalOccupe * trip.price;
         resetTotal.textContent = (toltalrecet + '.00DH');
     }
 
@@ -689,8 +688,8 @@ export function workCabine(trip, trips) {
 
             let toltalrecet  = reservations.reduce((total, reservation)=>{
                 return total + prixSiege(trip.price, reservation.seat);
-            })
-            resetTotal.textContent = toltalrecet;
+            }, 0)
+            resetTotal.textContent = toltalrecet + ' DH';
 
             const supp = document.getElementById(`place-${Siege}`);
             if (supp) {
