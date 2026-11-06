@@ -7,6 +7,11 @@ export function validationForm(telephone, trip, messageIn) {
         
         messageIn.className = ' bg-red-200 rounded-xl text-sm m-2 px-2 text-center text-red-900'
         messageIn.textContent = '10 chiffres commençant par 06 ou 07 '
+
+        setTimeout(function(){
+            messageIn.className = ''
+            messageIn.textContent= ""
+        }, 3000)
         return false;
     }
 
@@ -17,6 +22,5 @@ export function validationForm(telephone, trip, messageIn) {
         return false;
     }
 
-    //messageIn.textContent="";
     return true;
 }
