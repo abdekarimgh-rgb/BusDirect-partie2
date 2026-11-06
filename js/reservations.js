@@ -17,3 +17,26 @@ export function prixSiege(prix, nemero){
     return prix
 }
 
+export function inscrireEnAttente(trip, p){
+    trip.waitingList.push(p)
+}
+
+export function retirerDeAttente(trip, i) {
+    trip.waitingList.splice(i, 1);
+}
+
+export function voirListeAttenet(trip, seat){
+    if(trip.waitingList.length > 0){
+
+        const p = trip.waitingList.shift();
+        trip.reservations.push({
+            seat: seat,
+            name: p.name,
+            phone: p.phone
+        })
+
+        return p
+    }
+
+    return null;
+}

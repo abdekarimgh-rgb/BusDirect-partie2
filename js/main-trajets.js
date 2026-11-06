@@ -3,12 +3,11 @@ import { initialize } from "./store.js";
 
 const trips = await initialize();
 console.log(trips)
-console.log(Array.isArray(trips));
 
 affichageTrajet(trips);
 
 statistiqueTrajet();
 rechercherEndFiltrer();
-//pagenationAndBtns()
+pagenationAndBtns()
 
 

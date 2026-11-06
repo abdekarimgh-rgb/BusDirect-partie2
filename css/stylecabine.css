@@ -1,40 +1,121 @@
 /* cabine */
 
-#places{
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-width: 320px;
+}
+
+header {
+    gap: 12px;
+    padding: 8px 16px;
+    align-items: center;
+}
+
+header nav {
+    align-items: center;
+    align-content: center;
+}
+
+header nav>div:not(:last-child) {
+    min-width: 105px;
+}
+
+main {
+    width: 100%;
+    max-width: 1500px;
+    margin: auto;
+}
+
+
+.cabine-forms {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 16px;
+    margin-bottom: 4px;
+}
+
+.cabine-forms>nav,
+#formulaire {
+    min-width: 0;
+    width: 100%;
+}
+
+#places {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    /* grid-template-columns: 1fr 1fr 1fr 1f; */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
     justify-content: center;
+    padding: 12px 4px;
 }
 
-.card{
+.card {
     justify-self: center;
+    width: 100%;
+    max-width: 110px;
+    overflow-wrap: anywhere;
+
 }
 
-#choix{
+#choix {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
 }
 
-.red{
+.red {
     background-color: #ff0000;
 }
 
-.cabine-forms{
+.cabine-forms {
     display: flex;
     flex-direction: column-reverse;
 }
-@media (min-width : 768px){
-    .cabine-forms{
+
+@media (min-width : 1024px) {
+    .cabine-forms {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+        align-items: start;
     }
-    
+
+    #places {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .card {
+        max-width: 110px;
+    }
+
+    @media (max-width: 380px) {
+        header {
+            justify-content: center;
+        }
+
+        header nav {
+            width: 100%;
+        }
+
+        header nav>div:not(:last-child) {
+            flex: 1;
+            min-width: 85px;
+        }
+    }
+}
+
+@media(min-width: 600px) and (max-width: 1023px){
+    #places{
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
 }
 
 /* element dom */
 
-.messageStyle{
+.messageStyle {
     position: fixed;
     top: 20%;
     left: 50%;

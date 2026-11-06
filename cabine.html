@@ -19,26 +19,22 @@
             <img src="img/logo-orange.png" alt="logo" class="w-14 bg-blue-500 rounded-2xl m-2">
             <div class="">
                 <h1 class="text-3xl text font-bold text-blue-100">BusDirect</h1>
+                <p class=" text-blue-100">Réseau & Réservations</p>
             </div>
         </div>
 
-        <nav class="text-blue-100 flex flex-wrap gap-3  px-2">
-            <div class="  text-center bg-[#6911D1] w-27 flex flex-col place-content-center rounded-xl border-2 my-2 ">
+        <nav class="text-blue-100 flex flex-wrap items-center justify-center gap-2 px-2">
+            <div class="  text-center bg-[#6911D1] flex-1 flex flex-col place-content-center rounded-xl border">
                 <h4 class="font-semibold">Libre (80 DH)</h4>
                 <span class="font-bold" id="placeLibre">20</span>
             </div>
-            <div class=" text-center  bg-[#6911D1] w-27 flex flex-col place-content-center rounded-xl border-2 my-2">
+            <div class=" text-center  bg-[#6911D1] flex-1 flex flex-col place-content-center rounded-xl border">
                 <h4 class="font-semibold">Occupé</h4>
                 <span class="font-bold" id="placeOccupe">0</span>
             </div>
-            <div class=" text-center bg-[#6911D1] w-27 flex flex-col place-content-center rounded-xl border-2 my-2">
+            <div class=" text-center bg-[#6911D1] flex-1 flex flex-col place-content-center rounded-xl border px-2">
                 <h4 class="font-semibold">Recet Total</h4>
                 <span class="font-bold" id="resetTotal">0</span>
-            </div>
-            <div class="flex items-center text-4xl">
-                <span class="material-symbols-outlined font-bold">
-                    account_circle
-                </span>
             </div>
         </nav>
     </header>
@@ -46,7 +42,7 @@
 
     <main>
         <section
-            class=" border flex flex-wrap items-center justify-between px-4 bg-blue-50 my-4 mx-2 rounded-xl inset-shadow-indigo-400">
+            class=" border flex flex-wrap items-center justify-between px-4 py-2 bg-blue-50 my-4 mx-2 border-blue-200 rounded-xl shadow-sm">
             <div class="flex flex-wrap gap-2 items-center px-2 bg-blue-50 my-2 rounded-xl">
                 <div class="flex gap-1">
                     <span class="material-symbols-outlined " style="color: #90CAF9;">dialogs</span>
@@ -62,9 +58,9 @@
             </div>
         </section>
 
-        <section class="cabine-forms px-4 py-6 mx-3 border rounded-2xl gap-2">
-            <nav class="flex flex-col bg-red-50 px-4 py-3 border rounded-2xl text-blue-950 gap-3">
-                <div class="flex place-content-between w-full border rounded-xl">
+        <section class="cabine-forms py-3 mx-3 rounded-2xl gap-2">
+            <nav class="flex flex-col bg-red-50 px-4 py-4 border border-blue-200 shadow-sm rounded-2xl text-blue-950 gap-3">
+                <div class="flex place-content-between w-full border border-blue-200 rounded-xl shadow-sm p-2">
                     <div class="font-bold flex gap-1">
                         <span class="material-symbols-outlined text-blue-500">chair</span>
                         <h5 class="">Plan Cabine 20 place</h5>
@@ -233,8 +229,9 @@
                         <p class="cardLibre">Libre</p>
                     </div>
                 </article>
+                
             </nav>
-            <section id="formulaire" class=" bg-blue-50 px-4 py-4 border rounded-2xl content-center text-blue-950">
+            <section id="formulaire" class=" bg-blue-50 px-4 py-4 border border-blue-200 shadow-sm  rounded-2xl content-center text-blue-950">
                 <form id="form1" class="">
                     <div class="flex">
                         <span class="material-symbols-outlined">airline_seat_recline_extra</span>
@@ -275,7 +272,9 @@
                             class=" h-8 w-full px-2 border rounded-xl bg-blue-100 focus:shadow-xl"
                             placeholder="Ex: THomas Martin">
                         <label for="telephonMdf">Nouvelle telephone:</label>
-                        <input type="tele" id="telephonMdf" class=" h-8 w-full px-2 border rounded-xl bg-blue-100 focus:shadow-xl" placeholder="EX:0666666666">
+                        <input type="tele" id="telephonMdf"
+                            class=" h-8 w-full px-2 border rounded-xl bg-blue-100 focus:shadow-xl"
+                            placeholder="EX:0666666666">
                         <p class="messageIn2"></p>
                         <label for="NouveauSiege" class="">Nouveau siege</label>
                         <select name="Valider" id="NouveauSiege"
@@ -299,15 +298,15 @@
                     </div>
                 </form>
 
-                <form id="form4">
+                <form id="form4" class="border rounded-xl shadow-sm border-blue-200">
                     <div class=" flex justify-between px-4 py-4 text-blue-950">
                         <div class="flex">
                             <span class="material-symbols-outlined">hourglass_bottom</span>
                             <h2 class="text-xl font-semibold">Liste d'attente</h2>
                         </div>
-                        <h2 class="text-xl font-semibold">0</h2>
+                        <h2 id="tailleAttente" class="text-xl font-semibold">0</h2>
                     </div>
-                    <div class="flex justify-center px-4 py-4"><i>Aucun passager en attente.</i></div>
+                    <div id="listeAttente" class="flex justify-center px-4 py-4 flex-col text-center"><i>Aucun passager en attente.</i></div>
                 </form>
 
             </section>
