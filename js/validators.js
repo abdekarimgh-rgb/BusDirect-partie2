@@ -9,7 +9,7 @@ export function validationForm(telephone, trip, messageIn) {
         messageIn.textContent = '10 chiffres commençant par 06 ou 07 '
 
         setTimeout(function(){
-            messageIn.className = ''
+            messageIn.className = 'messageIn'
             messageIn.textContent= ""
         }, 3000)
         return false;
@@ -19,6 +19,12 @@ export function validationForm(telephone, trip, messageIn) {
 
         messageIn.className = 'bg-red-200 rounded-xl text-sm m-2 px-2 text-center text-red-900'
         messageIn.textContent = 'Ce numéro est déjà utilisé sur ce trajet'
+
+        setTimeout(function(){
+            messageIn.className = 'messageIn'
+            messageIn.textContent= ""
+        }, 3000)
+
         return false;
     }
 

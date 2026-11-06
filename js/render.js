@@ -132,7 +132,7 @@ export function pagenationAndBtns() {
         const trips_pagination = tab.slice(start, end).map(Element => {
             return Element.outerHTML
         })
-        
+
         tripsContainer.innerHTML = trips_pagination.join("")
     }
 
@@ -412,8 +412,8 @@ export function workCabine(trip, trips) {
             }
 
             //telephone 
-            const messageIn = document.querySelector('.messageIn');
-            validationForm(tele, trip, messageIn)
+            const messageIn = form.querySelector('.messageIn');
+
             if (!validationForm(tele, trip, messageIn)) {
                 return;
             }
@@ -541,14 +541,14 @@ export function workCabine(trip, trips) {
             let nouveauNam = NomPassagerM.value.trim();
             let nouveauSiege = NouveauSiege.value;
 
-            if (nouveauNam === "" && nouveauSiege === "") {
+            if (nouveauNam === "" && nouveauSiege === "" && nomChoisi === "") {
                 message('remplis ou moins deux chemps! choisir un nom obliguatoire');
                 return;
             }
 
             const nomRegex = /^[a-zA-ZÀ-ÿ\s]+$/;
 
-            if (!nomRegex.test(nouveauNam)) {
+            if (!nomRegex.test(nouveauNam) && nouveauNam !== "") {
                 message('Nom invalid')
                 return;
             }
@@ -583,7 +583,7 @@ export function workCabine(trip, trips) {
             let phoneFinal;
             if (nouveauPhone !== "") {
                 phoneFinal = nouveauPhone;
-                const messageIn2 = document.querySelector(".messageIn2")
+                const messageIn2 = form2.querySelector(".messageIn2")
 
                 validationForm(nouveauPhone, trip, messageIn2)
                 if (!validationForm(nouveauPhone, trip, messageIn2)) {
@@ -638,9 +638,9 @@ export function workCabine(trip, trips) {
             NomPassagerM.value = "";
             PassagerExistant.value = "";
             NouveauSiege.value = "";
+            nouvellePhone.value = ""
 
             remplisNumero(trip)
-            remplirSeiges();
             remplisagePassagerModif_Supp();
         });
     }
@@ -672,7 +672,7 @@ export function workCabine(trip, trips) {
             reservations.splice(positionNam, 1);
             //ajoute personne de liste attente
             const passager = voirListeAttenet(trip, Siege)
-            if(passager){
+            if (passager) {
                 message(`${passager.name} a obtenu le Siege ${Siege}`)
             }
             sauvegarder(trips);
@@ -686,7 +686,7 @@ export function workCabine(trip, trips) {
             placeLibre.textContent = (TotalLibre);
 
 
-            let toltalrecet  = reservations.reduce((total, reservation)=>{
+            let toltalrecet = reservations.reduce((total, reservation) => {
                 return total + prixSiege(trip.price, reservation.seat);
             }, 0)
             resetTotal.textContent = toltalrecet + ' DH';
@@ -700,7 +700,7 @@ export function workCabine(trip, trips) {
                 supp.querySelector('.phones').textContent = ""
             }
 
-            if(passager){
+            if (passager) {
                 supp.classList.remove('bg-blue-200');
                 supp.classList.add('bg-orange-400');
 
@@ -708,7 +708,7 @@ export function workCabine(trip, trips) {
                 supp.querySelector('.phones').textContent = passager.phone;
             }
 
-            else{
+            else {
                 supp.classList.remove('bg-orange-400');
                 supp.classList.add('bg-blue-200');
 
