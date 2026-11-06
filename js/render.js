@@ -274,7 +274,7 @@ export function workCabine(trip, trips) {
 
                 const statusPlace = targetPlace.querySelector('p');
                 statusPlace.textContent = reservation.name;
-                const phone = document.querySelector('.phones')
+                const phone = targetPlace.querySelector('.phones')
                 phone.textContent = reservation.phone
             }
         })
