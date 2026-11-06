@@ -1,6 +1,6 @@
 
-import { estComplet, placesLibres, prixSiege } from "./reservations.js";
-import { initialize, sauvegarder, trips } from "./store.js";
+import { estComplet, inscrireEnAttente, placesLibres, prixSiege, retirerDeAttente, voirListeAttenet } from "./reservations.js";
+import { sauvegarder } from "./store.js";
 import { validationForm } from "./validators.js";
 
 export function affichageTrajet(trips) {
@@ -128,12 +128,11 @@ export function pagenationAndBtns() {
         tripsContainer.innerHTML = ""
         const start = (numberPage - 1) * limite;
         const end = numberPage * limite;
-        console.log(tab)
 
         const trips_pagination = tab.slice(start, end).map(Element => {
             return Element.outerHTML
         })
-        console.log(trips_pagination)
+        
         tripsContainer.innerHTML = trips_pagination.join("")
     }
 
@@ -210,8 +209,8 @@ export function workCabine(trip, trips) {
     function remplirSeiges() {
 
         const direction = document.getElementById('direction');
-        direction.innerHTML += `<b class="text-5 flex items-center gap-2 bg-blue-300 rounded-xl px-2"> <span class="material-symbols-outlined">route</span>ligne : ${trip.departure} → ${trip.destination}</b>
-                                <b class="flex items-center gap-2 text-blue-500 text-sm bg-blue-300 rounded-xl px-2"><span class="material-symbols-outlined">schedule</span>  ${trip.departureTime} - ${trip.arrivalTime} </b>
+        direction.innerHTML += `<b class="text-5 flex items-center gap-2 bg-blue-200 shadow-sm border-blue-200  rounded-xl px-2 py-2"> <span class="material-symbols-outlined">route</span>ligne : ${trip.departure} → ${trip.destination}</b>
+                                <b class="flex items-center gap-2 text-blue-500 text-sm bg-blue-200 shadow-sm border-blue-200 rounded-xl px-2 py2"><span class="material-symbols-outlined">schedule</span>  ${trip.departureTime} - ${trip.arrivalTime} </b>
                              `
 
         selectSiege.innerHTML = `<option value="">-- Automatique (1er libre) --</option>`;
@@ -244,7 +243,7 @@ export function workCabine(trip, trips) {
         formulaire.append(message);
         setTimeout(function () {
             message.remove();
-        }, 1500)
+        }, 3000)
     }
 
     function remplisNumero(trips) {
@@ -261,7 +260,7 @@ export function workCabine(trip, trips) {
         })
     }
 
-    
+
 
     const reservations = trip.reservations;
 
@@ -443,8 +442,22 @@ export function workCabine(trip, trips) {
                 }
             }
 
-            if (reservations.length >= 20) {
-                message('Aucun siege disponible')
+            // ajoute ou liste d'attente
+            if (reservations.length >= Totalplace) {
+                const listeAtt = trip.waitingList;
+                if (listeAtt.length >= 3) {
+                    message('Aucun siege disponible')
+                    return;
+                }
+                const p = {
+                    name: nom,
+                    phone: tele
+                }
+                inscrireEnAttente(trip, p);
+
+                renderListeAttente();
+
+                message('le client entre sur la liste attente');
                 return;
             }
 
@@ -456,6 +469,7 @@ export function workCabine(trip, trips) {
             });
 
             sauvegarder(trips)
+            renderListeAttente()
             remplisNumero(trip)
             adapteStyle()
 
@@ -464,7 +478,7 @@ export function workCabine(trip, trips) {
             telephone.value = "";
 
             message("Réservation enregistrée !");
-        
+
             const targetPlace = document.getElementById(`place-${siegeFinal}`);
             if (targetPlace) {
                 targetPlace.classList.remove('bg-blue-200');
@@ -481,14 +495,11 @@ export function workCabine(trip, trips) {
             let TotalLibre = Totalplace - totalOccupe;
             placeLibre.textContent = (TotalLibre);
 
-            let toltalrecet = reservations.reduce(function(total, reservation){
+            let toltalrecet = reservations.reduce(function (total, reservation) {
                 return total + prixSiege(trip.price, reservation.seat);
             }, 0);
 
-            resetTotal.textContent = toltalrecet+"DH";
-
-            // let toltalrecet = totalOccupe * trip.price;
-            // resetTotal.textContent = (toltalrecet + '.00DH');
+            resetTotal.textContent = toltalrecet + "DH";
 
             remplisagePassagerModif_Supp();
         });
@@ -538,7 +549,7 @@ export function workCabine(trip, trips) {
 
             const nomRegex = /^[a-zA-ZÀ-ÿ\s]+$/;
 
-            if(!nomRegex.test(nouveauNam)){
+            if (!nomRegex.test(nouveauNam)) {
                 message('Nom invalid')
                 return;
             }
@@ -574,14 +585,14 @@ export function workCabine(trip, trips) {
             if (nouveauPhone !== "") {
                 phoneFinal = nouveauPhone;
                 const messageIn2 = document.querySelector(".messageIn2")
-                
+
                 validationForm(nouveauPhone, trip, messageIn2)
                 if (!validationForm(nouveauPhone, trip, messageIn2)) {
                     return;
                 }
             }
 
-            else{
+            else {
                 phoneFinal = reservations[position].phone;
             }
 
@@ -612,9 +623,9 @@ export function workCabine(trip, trips) {
                 NPlace.classList.add('bg-orange-400');
                 NPlace.querySelector('p').textContent = nomfinal;
                 NPlace.querySelector('.phones').textContent = phoneFinal
-                console.log(phoneFinal)
 
             }
+
 
             reservations[position].seat = siegeFinal;
             reservations[position].name = nomfinal;
@@ -660,32 +671,100 @@ export function workCabine(trip, trips) {
             alert(`supprimer la place de ${reservations[positionNam].name}`);
 
             reservations.splice(positionNam, 1);
-
+            //ajoute personne de liste attente
+            const passager = voirListeAttenet(trip, Siege)
+            if(passager){
+                message(`${passager.name} a obtenu le Siege ${Siege}`)
+            }
             sauvegarder(trips);
+            renderListeAttente()
             remplisNumero(trip);
 
             let totalOccupe = reservations.length;
             placeOccupe.textContent = totalOccupe;
 
-            let TotalLibre = 20 - totalOccupe;
+            let TotalLibre = Totalplace - totalOccupe;
             placeLibre.textContent = (TotalLibre);
 
 
-            let toltalrecet = totalOccupe * trip.price;
-            resetTotal.textContent = (toltalrecet + '.00DH');
+            let toltalrecet  = reservations.reduce((total, reservation)=>{
+                return total + prixSiege(trip.price, reservation.seat);
+            })
+            resetTotal.textContent = toltalrecet;
 
             const supp = document.getElementById(`place-${Siege}`);
             if (supp) {
-                console.log('mdf supp')
                 supp.classList.remove('bg-orange-400');
                 supp.classList.add('bg-blue-200');
+
                 supp.querySelector('p').textContent = 'Libre';
                 supp.querySelector('.phones').textContent = ""
+            }
+
+            if(passager){
+                supp.classList.remove('bg-blue-200');
+                supp.classList.add('bg-orange-400');
+
+                supp.querySelector('p').textContent = passager.name;
+                supp.querySelector('.phones').textContent = passager.phone;
+            }
+
+            else{
+                supp.classList.remove('bg-orange-400');
+                supp.classList.add('bg-blue-200');
+
+                supp.querySelector('p').textContent = 'Libre';
+                supp.querySelector('.phones').textContent = '';
             }
 
             remplisagePassagerModif_Supp();
         });
     }
+
+    function renderListeAttente() {
+
+        const listeAttente = document.getElementById('listeAttente');
+        const tailleAttente = document.getElementById('tailleAttente')
+
+        const listeWiting = trip.waitingList
+
+        tailleAttente.textContent = listeWiting.length
+
+        if (listeWiting.length > 0) {
+            if (listeAttente.querySelector('i')) {
+                listeAttente.querySelector('i').remove()
+            }
+        }
+
+        listeAttente.innerHTML = '';
+        listeWiting.forEach((element, index) => {
+            const p = document.createElement('p');
+
+            p.className = 'att flex items-center justify-between gap-3 bg-orange-50 border border-orange-200 rounded-xl p-3 mb-2 shadow-sm'
+            p.dataset.index = index;
+            p.textContent = `${element.name} ——— ${element.phone}`
+            const btn = document.createElement('button');
+            btn.className = " bg-red-500 hover:bg-red-600 text-white w-8 h-8 rounded-lg font-bold transition"
+            btn.textContent = '✕'
+            btn.type = "button"
+            p.appendChild(btn)
+            listeAttente.appendChild(p);
+
+            btn.addEventListener('click', (event) => {
+                event.preventDefault();
+                const i = Number(p.dataset.index)
+
+                retirerDeAttente(trip, i);
+                sauvegarder(trips);
+                renderListeAttente()
+            })
+        })
+
+    }
+
+
+
+    renderListeAttente();
     remplisNumero(trip)
     staistique();
     returnStyle();
